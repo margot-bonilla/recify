@@ -2,7 +2,7 @@ package app
 
 import (
 	"net/http"
-	u "../utils"
+	u "recify/utils"
 )
 
 var NotFoundHandler = func(next http.Handler) http.Handler {

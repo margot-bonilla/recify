@@ -9,13 +9,14 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-const UserTableName string = "recify_user";
+const UserTableName string = "user"
 
 /*
 JWT claims struct
 */
 type Token struct {
 	UserId uint
+	Username string
 	jwt.StandardClaims
 }
 

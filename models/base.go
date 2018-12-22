@@ -31,6 +31,7 @@ func init() {
 	}
 
 	db = conn
+	db.SingularTable(true)
 	db.Debug().AutoMigrate(&User{}, &Recipe{})
 }
 
