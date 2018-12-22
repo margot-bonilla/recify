@@ -18,16 +18,18 @@ func sayHello(res http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-		router := mux.NewRouter()
-		router.Use(app.JwtAuthentication) //attach JWT auth middleware
+	router := mux.NewRouter()
+	router.Use(app.JwtAuthentication) //attach JWT auth middleware
 
-		router.HandleFunc("/", sayHello)
+	router.HandleFunc("/", sayHello)
+
+	// @TODO good practices for routing /api/:resource/:id/:?action check https://www.openmymind.net/RESTful-routing-in-Go/
 
 	router.HandleFunc("/api/user/new", controllers.CreateUser).Methods("POST")
 	router.HandleFunc("/api/user/login", controllers.Authenticate).Methods("POST")
 
 	router.HandleFunc("/api/recipes/new", controllers.CreateRecipe).Methods("POST")
-	router.HandleFunc("/api/recipes/{user_id}", controllers.GetRecipesFor).Methods("GET")
+	router.HandleFunc("/api/recipes/{user_id:[0-9]+}", controllers.GetRecipesFor).Methods("GET")
 
 
 	port := os.Getenv("PORT") //Get port from .env file, we did not specify any port so this should return an empty string when tested locally
