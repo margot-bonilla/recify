@@ -6,13 +6,19 @@ import (
 	u "recify/utils"
 )
 
+const RecipeTableName = "recipe"
+
 type Recipe struct {
 	gorm.Model
 	Title string `json:"title"`
-	Steps string `json:"steps"`
+	Steps []Step `gorm:"foreignKey:RecipeId"`
 	Description string `json:"description"`
-	UserId uint `json:"user_id"` //The user that this contact belongs to
-	//IngredientList []Ingredient `gorm:foreignKey:RecipeRefer`
+	UserId uint `json:"user_id"`
+	RecipeIngredient *RecipeIngredient `json:"recipe_ingredient"`
+}
+
+func (*Recipe) TableName() string {
+	return RecipeTableName
 }
 
 /*
@@ -40,25 +46,25 @@ func (recipe *Recipe) Create() map[string] interface{} {
 	GetDB().Create(recipe)
 
 	resp := u.Message(true, "success")
-	resp["recipe"] = recipe
+	resp[RecipeTableName] = recipe
 	return resp
 }
 
-//func GetRecipe(id uint) *Recipe {
-//	recipe := &Recipe{}
-//	err := GetDB().Table("recipe").Where("id = ?", id).First(recipe).Error
-//
-//	if err != nil {
-//		log.Println(err)
-//		return nil
-//	}
-//
-//	return recipe
-//}
-
-func GetRecipes(id uint) []*Recipe {
+func GetUserRecipes(id uint) []*Recipe {
 	recipes := make([]*Recipe, 0)
-	err := GetDB().Table("recipe").Where("user_id = ?", id).Find(&recipes).Error
+	err := GetDB().Table(RecipeTableName).Where("user_id = ?", id).Find(&recipes).Error
+
+	if err != nil {
+		log.Println(err)
+		return nil
+	}
+
+	return recipes
+}
+
+func GetRecipes() []*Recipe {
+	recipes := make([]*Recipe, 0)
+	err := GetDB().Table(RecipeTableName).Find(&recipes).Error
 
 	if err != nil {
 		log.Println(err)

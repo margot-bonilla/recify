@@ -28,6 +28,10 @@ type User struct {
 	Token string `json:"token";sql:"-"`
 }
 
+func (*User) TableName() string {
+	return UserTableName
+}
+
 //Validate incoming user details...
 func (user *User) Validate() (map[string] interface{}, bool) {
 

@@ -24,6 +24,14 @@ var CreateRecipe = func(w http.ResponseWriter, r *http.Request) {
 	u.Respond(w, resp)
 }
 
+var GetAllRecipes = func(w http.ResponseWriter, r *http.Request) {
+
+	data := models.GetRecipes()
+	resp := u.Message(true, "success")
+	resp["data"] = data
+	u.Respond(w, resp)
+}
+
 var GetRecipesFor = func(w http.ResponseWriter, r *http.Request) {
 
 	params := mux.Vars(r)
@@ -34,7 +42,7 @@ var GetRecipesFor = func(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := models.GetRecipes(uint(id))
+	data := models.GetUserRecipes(uint(id))
 	resp := u.Message(true, "success")
 	resp["data"] = data
 	u.Respond(w, resp)

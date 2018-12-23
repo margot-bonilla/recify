@@ -29,6 +29,7 @@ func main() {
 	router.HandleFunc("/api/user/login", controllers.Authenticate).Methods("POST")
 
 	router.HandleFunc("/api/recipes/new", controllers.CreateRecipe).Methods("POST")
+	router.HandleFunc("/api/recipes", controllers.GetAllRecipes).Methods("GET")
 	router.HandleFunc("/api/recipes/{user_id:[0-9]+}", controllers.GetRecipesFor).Methods("GET")
 
 
