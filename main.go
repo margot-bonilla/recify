@@ -18,6 +18,9 @@ func sayHello(res http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
+
+	print("inside main")
+
 	router := mux.NewRouter()
 	router.Use(app.JwtAuthentication) //attach JWT auth middleware
 
