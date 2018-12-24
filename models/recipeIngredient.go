@@ -8,9 +8,9 @@ const RecipeIngredientTableName = "recipe_ingredient"
 
 type RecipeIngredient struct {
 	Recipe *Recipe `json:"recipe"`
-	RecipeID int `json:"recipe_id"`
+	RecipeID uint `json:"recipe_id"`
 	Ingredient Ingredient `json:"ingredient"`
-	IngredientId int `json:"ingredient_id"`
+	IngredientId uint `json:"ingredient_id"`
 	Amount int `json:"amount"`
 }
 
