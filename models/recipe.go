@@ -35,14 +35,24 @@ returns message and true if the requirement is met
 */
 func (recipe *Recipe) Validate() (map[string] interface{}, bool) {
 
+	// @TODO check if the user exists
 	if recipe.UserId <= 0 {
 		return u.Message(false, "User is not recognized"), false
+	}
+
+	temp := &Recipe{}
+
+	err := GetDB().Table(CategoryTableName).Where("name = ?", recipe.Title).First(temp).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return u.Message(false, "Connection error. Please retry"), false
+	}
+	if temp.Title != "" {
+		return u.Message(false, "Recipe already in db."), false
 	}
 
 	//All the required parameters are present
 	return u.Message(true, "success"), true
 }
-
 
 
 func (recipe *Recipe) Create() map[string] interface{} {
