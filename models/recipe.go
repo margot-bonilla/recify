@@ -11,10 +11,18 @@ const RecipeTableName = "recipe"
 type Recipe struct {
 	gorm.Model
 	Title string `json:"title"`
-	Steps []Step `gorm:"foreignKey:RecipeId"`
-	Description string `json:"description"`
+	Steps []Step `json:directions;gorm:"foreignKey:RecipeId"`
+	Description string `json:"desc"`
 	UserId uint `json:"user_id"`
+	Ingredients []Ingredient `json:"ingredients"`
+	Categories []Category `json:"categories"`
 	RecipeIngredient *RecipeIngredient `json:"recipe_ingredient"`
+	Rating float64 `json:"rating"`
+	Calories float64 `json:"calories"`
+	Fat int `json:"fat"`
+	Date string `json:"date"`
+	Protein float64 `json:"protein"`
+	Sodium int `json:"sodium"`
 }
 
 func (*Recipe) TableName() string {
