@@ -32,7 +32,8 @@ func init() {
 
 	db = conn
 	db.SingularTable(true)
-	db.Debug().AutoMigrate(&User{}, &Recipe{}, &Step{}, &Ingredient{}, &Category{}, &RecipeIngredient{})
+	//db.Debug().AutoMigrate(&User{})
+	//db.Debug().AutoMigrate(&User{}, &Recipe{}, &Step{}, &Ingredient{}, &Category{}, &RecipeIngredient{})
 }
 
 func GetDB() *gorm.DB {
