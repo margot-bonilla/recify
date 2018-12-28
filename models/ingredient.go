@@ -9,8 +9,8 @@ const IngredientTableName = "ingredient"
 
 type Ingredient struct {
 	gorm.Model
-	Name string `json:"name"`
-	Measure string `json:"measure"`
+	Name             string            `json:"name"`
+	Measure          string            `json:"measure"`
 	RecipeIngredient *RecipeIngredient `json:"recipe_ingredient"`
 }
 
@@ -18,7 +18,7 @@ func (*Ingredient) TableName() string {
 	return IngredientTableName
 }
 
-func (ingredient *Ingredient) Create() map[string] interface{} {
+func (ingredient *Ingredient) Create() map[string]interface{} {
 
 	//if resp, ok := recipe.Validate(); !ok {
 	//	return resp

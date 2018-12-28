@@ -6,47 +6,50 @@ import (
 	"net/http"
 	"recify/controllers/v2/inputs"
 	"recify/models/v2"
-	"recify/services"
+	"recify/repositories"
 	u "recify/utils"
-	"time"
 )
 
 var CreateRecipe = func(w http.ResponseWriter, r *http.Request) {
 	// userId := r.Context().Value("user") . (uint)
 	recipeInput := &inputs.RecipeInput{}
 
-	err:= json.NewDecoder(r.Body).Decode(recipeInput)
+	err := json.NewDecoder(r.Body).Decode(recipeInput)
 
 	if err != nil {
 		u.Respond(w, u.Message(false, "Error decoding request body"))
 		return
 	}
 
-	// assign to categories :=
-	categories := v2.GetCategoriesByIds(recipeInput.Categories)
+	output, err := recipeInput.Input2Models()
 
-
-	// create amountIngredient
-	//for i:= 0; i < len(recipeInput.Ingredients); i++ {
-	//
-	//}
+	if err != nil {
+		u.Respond(w, u.Message(false, "Error parsing request body"))
+		return
+	}
 
 	recipe := &v2.Recipe{}
-	recipe.Title = recipeInput.Title
-	recipe.Description = recipeInput.Description
-	recipe.CreatedAt = time.Now().UTC()
+	recipe = output.Recipe
 
-	services.CreateRecipe(recipe, categories)
+	categories := make([]*v2.Category, 0)
+	categories = output.Categories
 
-	// _ , err = recipe.Create()
+	ingredients := make([]*v2.AmountIngredient, 0)
+	ingredients = output.AmountIngredients
 
-	var resp map[string] interface{}
+	steps := make([]*v2.Step, 0)
+	steps = output.Steps
+
+	recipeId, err := repositories.CreateRecipe(recipe, categories, ingredients, steps)
+
+	var resp map[string]interface{}
 
 	if err != nil {
 		resp = u.Message(false, "Something went wrong")
 		log.Fatal(err)
 	} else {
 		resp = u.Message(true, "success")
+		resp["recipe_id"] = recipeId
 	}
 
 	u.Respond(w, resp)

@@ -16,7 +16,7 @@ func (*Category) TableName() string {
 	return CategoryTableName
 }
 
-func (category *Category) Validate() (map[string] interface{}, bool) {
+func (category *Category) Validate() (map[string]interface{}, bool) {
 
 	temp := &Category{}
 
@@ -31,8 +31,7 @@ func (category *Category) Validate() (map[string] interface{}, bool) {
 	return u.Message(false, "Requirement passed"), true
 }
 
-
-func (category *Category) Create() map[string] interface{} {
+func (category *Category) Create() map[string]interface{} {
 
 	if resp, ok := category.Validate(); !ok {
 		return resp

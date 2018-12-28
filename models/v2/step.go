@@ -1,7 +1,7 @@
 package v2
 
 type Step struct {
-	RecipeId uint
-	Position uint
-	Description string
+	RecipeId    uint   `json:"recipe_id"`
+	Position    uint   `json:"position"`
+	Description string `json:"description"`
 }

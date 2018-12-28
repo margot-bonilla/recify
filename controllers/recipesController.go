@@ -1,16 +1,17 @@
 package controllers
+
 import (
+	"encoding/json"
+	"github.com/gorilla/mux"
 	"net/http"
 	"recify/models"
-	"encoding/json"
 	u "recify/utils"
 	"strconv"
-	"github.com/gorilla/mux"
 )
 
 var CreateRecipe = func(w http.ResponseWriter, r *http.Request) {
 
-	user := r.Context().Value("user") . (uint) //Grab the id of the user that send the request
+	user := r.Context().Value("user").(uint) //Grab the id of the user that send the request
 	recipe := &models.Recipe{}
 
 	err := json.NewDecoder(r.Body).Decode(recipe)

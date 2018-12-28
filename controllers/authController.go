@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"net/http"
-	u "recify/utils"
-	"recify/models"
 	"encoding/json"
+	"net/http"
+	"recify/models"
+	u "recify/utils"
 )
 
 var CreateUser = func(w http.ResponseWriter, r *http.Request) {

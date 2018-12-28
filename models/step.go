@@ -9,16 +9,16 @@ const StepTableName = "step"
 
 type Step struct {
 	gorm.Model
-	Position int `json:"position"`
+	Position    int    `json:"position"`
 	Description string `json:"description"`
-	RecipeId uint `json:"recipe_id"`
+	RecipeId    uint   `json:"recipe_id"`
 }
 
 func (*Step) TableName() string {
 	return StepTableName
 }
 
-func (step *Step) Create() map[string] interface{} {
+func (step *Step) Create() map[string]interface{} {
 
 	//if resp, ok := recipe.Validate(); !ok {
 	//	return resp

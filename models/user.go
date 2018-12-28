@@ -2,11 +2,11 @@ package models
 
 import (
 	"github.com/dgrijalva/jwt-go"
+	"github.com/jinzhu/gorm"
+	"golang.org/x/crypto/bcrypt"
+	"os"
 	u "recify/utils"
 	"strings"
-	"github.com/jinzhu/gorm"
-	"os"
-	"golang.org/x/crypto/bcrypt"
 )
 
 const UserTableName string = "user"
@@ -15,7 +15,7 @@ const UserTableName string = "user"
 JWT claims struct
 */
 type Token struct {
-	UserId uint
+	UserId   uint
 	Username string
 	jwt.StandardClaims
 }
@@ -23,9 +23,9 @@ type Token struct {
 //a struct to rep user
 type User struct {
 	gorm.Model
-	Email string `json:"email"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
-	Token string `json:"token";sql:"-"`
+	Token    string `json:"token";sql:"-"`
 }
 
 func (*User) TableName() string {
@@ -33,7 +33,7 @@ func (*User) TableName() string {
 }
 
 //Validate incoming user details...
-func (user *User) Validate() (map[string] interface{}, bool) {
+func (user *User) Validate() (map[string]interface{}, bool) {
 
 	if !strings.Contains(user.Email, "@") {
 		return u.Message(false, "Email address is required"), false
@@ -58,7 +58,7 @@ func (user *User) Validate() (map[string] interface{}, bool) {
 	return u.Message(false, "Requirement passed"), true
 }
 
-func (user *User) Create() (map[string] interface{}) {
+func (user *User) Create() map[string]interface{} {
 
 	if resp, ok := user.Validate(); !ok {
 		return resp
@@ -86,7 +86,7 @@ func (user *User) Create() (map[string] interface{}) {
 	return response
 }
 
-func Login(email, password string) (map[string]interface{}) {
+func Login(email, password string) map[string]interface{} {
 
 	user := &User{}
 	err := GetDB().Table(UserTableName).Where("email = ?", email).First(user).Error

@@ -12,17 +12,17 @@ import (
 import "fmt"
 
 type RecipeDataSet struct {
-	Title 		string
-	Directions 	[]string
-	Fat 		float32
-	Date 		string
-	Categories 	[]string
-	Calories 	float32
-	Desc 		string
-	Protein 	float32
-	Rating 		float64
+	Title       string
+	Directions  []string
+	Fat         float32
+	Date        string
+	Categories  []string
+	Calories    float32
+	Desc        string
+	Protein     float32
+	Rating      float64
 	Ingredients []string
-	Sodium 		float32
+	Sodium      float32
 }
 
 func main() {
@@ -37,7 +37,6 @@ func main() {
 	fmt.Println("Successfully Opened ")
 	// defer the closing of our jsonFile so that we can parse it later on
 	defer jsonFile.Close()
-
 
 	// read our opened xmlFile as a byte array.
 	byteValue, _ := ioutil.ReadAll(jsonFile)
@@ -90,9 +89,6 @@ func main() {
 				recipeIngredient.Create()
 			}
 
-
-
 		}
 	}
 }
-

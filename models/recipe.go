@@ -10,19 +10,19 @@ const RecipeTableName = "recipe"
 
 type Recipe struct {
 	gorm.Model
-	Title string `json:"title"`
-	Steps []Step `json:directions;gorm:"foreignKey:RecipeId"`
-	Description string `json:"desc"`
-	UserId uint `json:"user_id"`
-	Ingredients []Ingredient `json:"ingredients"`
-	Categories []Category `json:"categories"`
+	Title            string            `json:"title"`
+	Steps            []Step            `json:directions;gorm:"foreignKey:RecipeId"`
+	Description      string            `json:"desc"`
+	UserId           uint              `json:"user_id"`
+	Ingredients      []Ingredient      `json:"ingredients"`
+	Categories       []Category        `json:"categories"`
 	RecipeIngredient *RecipeIngredient `json:"recipe_ingredient"`
-	Rating float64 `json:"rating"`
-	Calories float64 `json:"calories"`
-	Fat int `json:"fat"`
-	Date string `json:"date"`
-	Protein float64 `json:"protein"`
-	Sodium int `json:"sodium"`
+	Rating           float64           `json:"rating"`
+	Calories         float64           `json:"calories"`
+	Fat              int               `json:"fat"`
+	Date             string            `json:"date"`
+	Protein          float64           `json:"protein"`
+	Sodium           int               `json:"sodium"`
 }
 
 func (*Recipe) TableName() string {
@@ -33,7 +33,7 @@ func (*Recipe) TableName() string {
  This struct function validate the required parameters sent through the http request body
 returns message and true if the requirement is met
 */
-func (recipe *Recipe) Validate() (map[string] interface{}, bool) {
+func (recipe *Recipe) Validate() (map[string]interface{}, bool) {
 
 	// @TODO check if the user exists
 	if recipe.UserId <= 0 {
@@ -54,8 +54,7 @@ func (recipe *Recipe) Validate() (map[string] interface{}, bool) {
 	return u.Message(true, "success"), true
 }
 
-
-func (recipe *Recipe) Create() map[string] interface{} {
+func (recipe *Recipe) Create() map[string]interface{} {
 
 	if resp, ok := recipe.Validate(); !ok {
 		return resp
