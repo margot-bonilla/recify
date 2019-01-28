@@ -15,11 +15,11 @@ func GetConnection() *sql.DB {
 
 	dbUri := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable password=%s", dbHost, username, dbName, password)
 
-	db, err := sql.Open("postgres", dbUri)
+	database, err := sql.Open("postgres", dbUri)
 
 	if err != nil {
 		fmt.Print(err)
 	}
 
-	return db
+	return database
 }

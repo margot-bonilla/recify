@@ -2,31 +2,43 @@ package models
 
 import (
 	u "recify/utils"
+	"time"
+
+	"github.com/jinzhu/gorm"
 )
 
+// RecipeIngredientTableName table name
 const RecipeIngredientTableName = "recipe_ingredient"
 
+// RecipeIngredient relation table with amount attribute
 type RecipeIngredient struct {
-	Recipe       *Recipe    `json:"recipe"`
-	RecipeID     uint       `json:"recipe_id"`
-	Ingredient   Ingredient `json:"ingredient"`
-	IngredientId uint       `json:"ingredient_id"`
-	Amount       int        `json:"amount"`
+	gorm.Model
+	RecipeID     uint      `json:"recipe_id"`
+	IngredientID uint      `json:"ingredient_id"`
+	Amount       float32   `json:"amount"`
+	Measure      string    `json:"measure"`
+	CreatedAt    time.Time `json:"created_at"`
+	UpdatedAt    time.Time `json:"updated_at"`
+
+	// @TODO
+	//RecipeIngredient *RecipeIngredient `json:"recipe_ingredient"`
 }
 
-func (*RecipeIngredient) Table() string {
+// TableName get name of the table
+func (*RecipeIngredient) TableName() string {
 	return RecipeIngredientTableName
 }
 
-func (recipeIngredient *RecipeIngredient) Create() map[string]interface{} {
+// Create create row in the database from the object form
+func (ingredient *RecipeIngredient) Create() map[string]interface{} {
 
-	//if resp, ok := recipeIngredient.Validate(); !ok {
+	//if resp, ok := recipe.Validate(); !ok {
 	//	return resp
 	//}
 
-	GetDB().Create(recipeIngredient)
+	GetDB().Create(ingredient)
 
 	resp := u.Message(true, "success")
-	resp[RecipeIngredientTableName] = recipeIngredient
+	resp[IngredientTableName] = ingredient
 	return resp
 }

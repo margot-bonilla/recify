@@ -3,12 +3,13 @@ package app
 import (
 	"context"
 	"fmt"
-	jwt "github.com/dgrijalva/jwt-go"
 	"net/http"
 	"os"
 	"recify/models"
 	u "recify/utils"
 	"strings"
+
+	jwt "github.com/dgrijalva/jwt-go"
 )
 
 var JwtAuthentication = func(next http.Handler) http.Handler {
@@ -72,7 +73,7 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 
 		//Everything went well, proceed with the request and set the caller to the user retrieved from the parsed token
 		fmt.Sprintf("User %", tk.Username) //Useful for monitoring
-		ctx := context.WithValue(r.Context(), "user", tk.UserId)
+		ctx := context.WithValue(r.Context(), "user", tk.UserID)
 		r = r.WithContext(ctx)
 		next.ServeHTTP(w, r) //proceed in the middleware chain!
 	})

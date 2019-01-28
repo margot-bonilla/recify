@@ -1,12 +1,14 @@
 package models
 
 import (
-	"github.com/dgrijalva/jwt-go"
-	"github.com/jinzhu/gorm"
-	"golang.org/x/crypto/bcrypt"
 	"os"
 	u "recify/utils"
 	"strings"
+	"time"
+
+	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/jinzhu/gorm"
+	"golang.org/x/crypto/bcrypt"
 )
 
 const UserTableName string = "user"
@@ -15,7 +17,7 @@ const UserTableName string = "user"
 JWT claims struct
 */
 type Token struct {
-	UserId   uint
+	UserID   uint
 	Username string
 	jwt.StandardClaims
 }
@@ -23,16 +25,19 @@ type Token struct {
 //a struct to rep user
 type User struct {
 	gorm.Model
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	Token    string `json:"token";sql:"-"`
+	ID        uint      `json:"id"`
+	Email     string    `json:"email"`
+	Password  string    `json:"password"`
+	Token     string    `json:"token";sql:"-"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func (*User) TableName() string {
 	return UserTableName
 }
 
-//Validate incoming user details...
+// Validate incoming user details...
 func (user *User) Validate() (map[string]interface{}, bool) {
 
 	if !strings.Contains(user.Email, "@") {
@@ -74,7 +79,7 @@ func (user *User) Create() map[string]interface{} {
 	}
 
 	//Create new JWT token for the newly registered user
-	tk := &Token{UserId: user.ID}
+	tk := &Token{UserID: user.ID}
 	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
 	tokenString, _ := token.SignedString([]byte(os.Getenv("token_password")))
 	user.Token = tokenString
@@ -105,7 +110,7 @@ func Login(email, password string) map[string]interface{} {
 	user.Password = ""
 
 	//Create JWT token
-	tk := &Token{UserId: user.ID}
+	tk := &Token{UserID: user.ID}
 	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
 	tokenString, _ := token.SignedString([]byte(os.Getenv("token_password")))
 	user.Token = tokenString //Store the token in the response

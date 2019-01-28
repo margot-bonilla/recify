@@ -4,19 +4,19 @@ import (
 	"fmt"
 	"log"
 	"recify/db"
-	"recify/models/v2"
+	"recify/models"
 )
 
 const RecipeTableName = "recipe"
-const RecipeToCategoryTableName = "recipe_to_category"
-const AmountIngredientTableName = "recipe_amount_ingredient"
-const RecipeStepTable = "recipe_step"
+const RecipeToCategoryTableName = "recipe_category"
+const AmountIngredientTableName = "recipe_ingredient"
+const RecipeStepTable = "step"
 
 var CreateRecipe = func(
-	recipe *v2.Recipe,
-	categories []*v2.Category,
-	amountIngredients []*v2.AmountIngredient,
-	steps []*v2.Step) (uint, error) {
+	recipe *models.Recipe,
+	categories []*models.Category,
+	amountIngredients []*models.RecipeIngredient,
+	steps []*models.Step) (uint, error) {
 
 	conn := db.GetConnection()
 
@@ -51,7 +51,7 @@ var CreateRecipe = func(
 
 	for i := 0; i < len(categories); i++ {
 		c := categories[i]
-		catQuery += fmt.Sprintf("(%d, %d)", recipeId, c.Id)
+		catQuery += fmt.Sprintf("(%d, %d)", recipeId, c.ID)
 		if i >= 0 && i < (len(categories)-1) {
 			catQuery += ","
 		}
@@ -72,7 +72,7 @@ var CreateRecipe = func(
 	for i := 0; i < len(amountIngredients); i++ {
 		ing := amountIngredients[i]
 		amountIngredientsQuery += fmt.Sprintf(
-			"(%d, %d, %f, '%s')", recipeId, ing.IngredientId, ing.Amount, ing.Measure)
+			"(%d, %d, %f, '%s')", recipeId, ing.IngredientID, ing.Amount, ing.Measure)
 		if i >= 0 && i < (len(amountIngredients)-1) {
 			amountIngredientsQuery += ","
 		}

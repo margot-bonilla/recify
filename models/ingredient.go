@@ -1,17 +1,24 @@
 package models
 
 import (
-	"github.com/jinzhu/gorm"
 	u "recify/utils"
+	"time"
+
+	"github.com/jinzhu/gorm"
 )
 
 const IngredientTableName = "ingredient"
 
 type Ingredient struct {
 	gorm.Model
-	Name             string            `json:"name"`
-	Measure          string            `json:"measure"`
-	RecipeIngredient *RecipeIngredient `json:"recipe_ingredient"`
+	ID        uint      `json:"id"`
+	Name      string    `json:"name"`
+	Measure   string    `json:"measure"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+
+	// @TODO
+	//RecipeIngredient *RecipeIngredient `json:"recipe_ingredient"`
 }
 
 func (*Ingredient) TableName() string {

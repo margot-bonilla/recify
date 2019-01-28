@@ -51,7 +51,7 @@ func main() {
 	// we iterate through every user within our users array and
 	// print out the user Type, their name, and their facebook url
 	// as just an example
-	for i := 0; i < 1; i++ {
+	for i := 0; i < len(recipes); i++ {
 		fmt.Println(recipes[i].Title)
 		var recipe models.Recipe
 		recipe.Title = recipes[i].Title

@@ -1,17 +1,23 @@
 package models
 
 import (
-	"github.com/jinzhu/gorm"
 	u "recify/utils"
+	"time"
+
+	"github.com/jinzhu/gorm"
 )
 
 const StepTableName = "step"
 
 type Step struct {
 	gorm.Model
-	Position    int    `json:"position"`
-	Description string `json:"description"`
-	RecipeId    uint   `json:"recipe_id"`
+	Position    uint      `json:"position"`
+	Description string    `json:"description"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
+
+	// @TODO create constraint
+	RecipeID uint `json:"recipe_id"`
 }
 
 func (*Step) TableName() string {
