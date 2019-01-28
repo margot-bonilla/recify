@@ -15,6 +15,11 @@ type Category struct {
 	Name string `json:"name"`
 }
 
+// TableName get name of the table
+func (*Category) TableName() string {
+	return CategoryTableName
+}
+
 func GetCategoryById(categoryID uint) *Category {
 	category := &Category{}
 

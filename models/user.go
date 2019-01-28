@@ -94,6 +94,7 @@ func (user *User) Create() map[string]interface{} {
 func Login(email, password string) map[string]interface{} {
 
 	user := &User{}
+	// TODO
 	err := GetDB().Table(UserTableName).Where("email = ?", email).First(user).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
@@ -123,6 +124,7 @@ func Login(email, password string) map[string]interface{} {
 func GetUser(u uint) *User {
 
 	acc := &User{}
+	// TODO
 	GetDB().Table(UserTableName).Where("id = ?", u).First(acc)
 	if acc.Email == "" { //User not found!
 		return nil
