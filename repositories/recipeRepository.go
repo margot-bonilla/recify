@@ -66,13 +66,13 @@ var CreateRecipe = func(
 	}
 
 	var amountIngredientsQuery = fmt.Sprintf(`
-		INSERT INTO %s (recipe_id, ingredient_id, amount, measure) VALUES
+		INSERT INTO %s (recipe_id, name, amount, measure) VALUES
 	`, AmountIngredientTableName)
 
 	for i := 0; i < len(amountIngredients); i++ {
 		ing := amountIngredients[i]
 		amountIngredientsQuery += fmt.Sprintf(
-			"(%d, %d, %f, '%s')", recipeId, ing.IngredientID, ing.Amount, ing.Measure)
+			"(%d, %s, %f, '%s')", recipeId, ing.Name, ing.Amount, ing.Measure)
 		if i >= 0 && i < (len(amountIngredients)-1) {
 			amountIngredientsQuery += ","
 		}

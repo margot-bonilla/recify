@@ -1,7 +1,8 @@
 package models
 
-const StepTableName = "step"
+const stepTableName = "step"
 
+// Step model
 type Step struct {
 	RecipeID    uint   `json:"recipe_id"`
 	Position    uint   `json:"position"`
@@ -10,5 +11,5 @@ type Step struct {
 
 // TableName get name of the table
 func (*Step) TableName() string {
-	return StepTableName
+	return stepTableName
 }

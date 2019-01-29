@@ -68,6 +68,7 @@ CREATE TABLE recipe (
 	id serial PRIMARY KEY,
 	title VARCHAR(80) NOT NULL,
 	description VARCHAR(1024)  NULL,
+	rating DECIMAL(3,2) DEFAULT NULL,
 	created_at TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP NULL
 );
@@ -146,35 +147,22 @@ ALTER TABLE recipe_category
 CREATE INDEX recipe_id_recipe_category_idx ON recipe_category (recipe_id);
 CREATE INDEX category_id_recipe_category_idx ON recipe_category (category_id);
 
-
--- ingredients
-
-CREATE TABLE "ingredient" (
-	id SERIAL PRIMARY KEY,
-	name VARCHAR(80) NOT NULL UNIQUE,
-	created_at TIMESTAMP NOT NULL,
-	updated_at TIMESTAMP NULL
-);
-
 -- recipe's amount of ingredients
 
 CREATE TABLE "recipe_ingredient" (
 	recipe_id SERIAL NOT NULL,
 	ingredient_id SERIAL NOT NULL,
+	name VARCHAR(100) NOT NULL,
 	amount REAL NOT NULL,
-	measure CHAR(2) NOT NULL,
+	measure VARCHAR(20) NOT NULL,
+	created_at TIMESTAMP NOT NULL,
+	updated_at TIMESTAMP NULL,
 	CONSTRAINT recipe_id_recipe_amount_ingredient_fk
 		FOREIGN KEY (recipe_id)
 		REFERENCES recipe(id)
 		ON DELETE CASCADE
 		ON UPDATE CASCADE
 );
-ALTER TABLE "recipe_ingredient"
-	ADD CONSTRAINT ingredient_id_recipe_amount_ingreadient_fk
-		FOREIGN KEY (ingredient_id)
-		REFERENCES ingredient(id)
-		ON UPDATE CASCADE
-;
 
 CREATE INDEX recipe_id_recipe_ingredient_idx ON recipe_ingredient (recipe_id);
 CREATE INDEX ingredient_id_recipe_ingredient_idx ON recipe_ingredient (ingredient_id);
