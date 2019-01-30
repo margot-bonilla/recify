@@ -8,7 +8,7 @@ import (
 	"github.com/lib/pq"
 )
 
-const CategoryTableName = "recipe_category"
+const CategoryTableName = "category"
 
 type Category struct {
 	ID   uint   `json:"id"`

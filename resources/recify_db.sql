@@ -152,7 +152,7 @@ CREATE INDEX category_id_recipe_category_idx ON recipe_category (category_id);
 CREATE TABLE "recipe_ingredient" (
 	recipe_id SERIAL NOT NULL,
 	ingredient_id SERIAL NOT NULL,
-	name VARCHAR(100) NOT NULL,
+	name VARCHAR(256) NOT NULL,
 	amount REAL NOT NULL,
 	measure VARCHAR(20) NOT NULL,
 	created_at TIMESTAMP NOT NULL,

@@ -5,6 +5,7 @@ import (
 	"log"
 	"recify/db"
 	"recify/models"
+	"strings"
 )
 
 const RecipeTableName = "recipe"
@@ -50,8 +51,31 @@ var CreateRecipe = func(
 	var catQuery = fmt.Sprintf(`INSERT INTO %s VALUES `, RecipeToCategoryTableName)
 
 	for i := 0; i < len(categories); i++ {
+
 		c := categories[i]
-		catQuery += fmt.Sprintf("(%d, %d)", recipeId, c.ID)
+
+		query := fmt.Sprintf(`
+		INSERT INTO %s (name, created_at) VALUES ($1, current_timestamp) ON CONFLICT("name") DO UPDATE SET name=EXCLUDED.name RETURNING id
+	`, models.CategoryTableName)
+
+		res := t.QueryRow(query, c.Name)
+
+		if err != nil {
+			_ = t.Rollback()
+			log.Fatalln(err)
+			return 0, err
+		}
+
+		var categoryID uint
+		err = res.Scan(&categoryID)
+
+		if err != nil {
+			_ = t.Rollback()
+			log.Fatal(err)
+			return 0, err
+		}
+
+		catQuery += fmt.Sprintf("(%d, %d)", recipeId, categoryID)
 		if i >= 0 && i < (len(categories)-1) {
 			catQuery += ","
 		}
@@ -66,13 +90,13 @@ var CreateRecipe = func(
 	}
 
 	var amountIngredientsQuery = fmt.Sprintf(`
-		INSERT INTO %s (recipe_id, name, amount, measure) VALUES
+		INSERT INTO %s (recipe_id, name, amount, measure, created_at) VALUES
 	`, AmountIngredientTableName)
 
 	for i := 0; i < len(amountIngredients); i++ {
 		ing := amountIngredients[i]
 		amountIngredientsQuery += fmt.Sprintf(
-			"(%d, %s, %f, '%s')", recipeId, ing.Name, ing.Amount, ing.Measure)
+			"(%d, '%s', %f, '%s', current_timestamp)", recipeId, strings.Replace(ing.Name, "'", " ", -1), ing.Amount, ing.Measure)
 		if i >= 0 && i < (len(amountIngredients)-1) {
 			amountIngredientsQuery += ","
 		}
@@ -90,7 +114,7 @@ var CreateRecipe = func(
 
 	for i := 0; i < len(steps); i++ {
 		st := steps[i]
-		stepsQuery += fmt.Sprintf("(%d, %d, '%s')", recipeId, st.Position, st.Description)
+		stepsQuery += fmt.Sprintf("(%d, %d, '%s')", recipeId, st.Position, strings.Replace(st.Description, "'", " ", -1))
 		if i >= 0 && i < (len(steps)-1) {
 			stepsQuery += ","
 		}
