@@ -13,10 +13,10 @@ const AmountIngredientTableName = "recipe_ingredient"
 const RecipeStepTable = "step"
 
 var CreateRecipe = func(
-	recipe *models.Recipe,
-	categories []*models.Category,
-	amountIngredients []*models.RecipeIngredient,
-	steps []*models.Step) (uint, error) {
+	recipe models.Recipe,
+	categories []models.Category,
+	amountIngredients []models.RecipeIngredient,
+	steps []models.Step) (uint, error) {
 
 	conn := db.GetConnection()
 

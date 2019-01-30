@@ -55,7 +55,6 @@ func (input *RecipeInput) Input2Models() (*RecipeOutput, error) {
 
 		ing.Amount = ingInput.Amount
 		ing.Measure = ingInput.Measure
-		ing.IngredientID = ingInput.ID
 
 		ingredients = append(ingredients, ing)
 	}
